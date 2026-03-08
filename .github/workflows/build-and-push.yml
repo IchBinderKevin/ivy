@@ -1,8 +1,9 @@
 name: docker-build
 
 on:
-  release:
-    types: [published, created]
+  push:
+    tags:
+      - "v*"
 
 jobs:
   docker:
