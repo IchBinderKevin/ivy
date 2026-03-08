@@ -4,7 +4,7 @@ export function Logo() {
       version="1.1"
       viewBox="0 0 160 156.38"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-8 h-8"
+      className="w-14 h-14"
     >
       <g transform="translate(-46.045 -64.504)">
         <g

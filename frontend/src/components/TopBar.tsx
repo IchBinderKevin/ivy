@@ -1,13 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Search } from "lucide-react";
 
 export default function TopBar() {
   return (
-    <div className="w-full h-20 flex flex-row justify-between items-center p-2">
+    <div className="w-full h-20 flex flex-row justify-between items-center px-4 py-2">
       <div className="flex flex-row items-center gap-2">
-        <SidebarTrigger className="bg-slate-100 w-12 h-12 size-12" />
         <h1 className="text-4xl font-bold text-gray-700">Ivy</h1>
       </div>
 
