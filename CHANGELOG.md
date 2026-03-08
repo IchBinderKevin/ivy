@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/IchBinderKevin/ivy/compare/v0.1.2...v0.1.3) (2026-03-08)
+
+
+### Bug Fixes
+
+* added created hook for release docker flow ([bf6340d](https://github.com/IchBinderKevin/ivy/commit/bf6340d384fab8f6c67acbfc90a59b717f6d4c2e))
+
 ## [0.1.2](https://github.com/IchBinderKevin/ivy/compare/v0.1.1...v0.1.2) (2026-03-08)
 
 
