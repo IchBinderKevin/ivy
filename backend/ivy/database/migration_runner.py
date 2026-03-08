@@ -5,6 +5,10 @@ import aiosqlite
 DATABASE_MIGRATIONS_PATH = "./migrations"
 
 async def run_migrations(db: aiosqlite.Connection):
+    """
+    Inserts or updates the schema_version table and applies migrations as needed.
+    Migrations are applied in order of their version number in the filename (001 before 002 and so on)
+    """
     try:
         await db.execute("""
             CREATE TABLE IF NOT EXISTS schema_version (
