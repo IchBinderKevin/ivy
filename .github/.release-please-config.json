@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "frontend": {
+      "release-type": "node",
+      "package-name": "ivy-frontend"
+    },
+    "backend": {
+      "release-type": "python",
+      "package-name": "ivy-backend"
+    }
+  }
+}

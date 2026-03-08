@@ -31,7 +31,12 @@ COPY --from=frontend /frontend/dist ./dist
 
 RUN mkdir -p data
 
-EXPOSE 3000
+ARG VERSION
+ENV APP_VERSION=$VERSION
+
 ENV DEPLOYMENT_MODE="docker"
 ENV PYTHONUNBUFFERED=1
+
+EXPOSE 3000
+
 CMD ["uv", "run", "python", "ivy/main.py"]
