@@ -1,0 +1,5 @@
+CREATE TABLE locations (id INTEGER PRIMARY KEY, name TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, parent_location_id INTEGER, FOREIGN KEY (parent_location_id) REFERENCES locations(id) ON DELETE SET NULL);
+CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT, image TEXT, location_id INTEGER, quantity INTEGER, date_of_purchase TEXT, buy_price REAL, bought_from TEXT, serial_number TEXT, model_number TEXT, isbn TEXT, notes TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(location_id) REFERENCES locations(id));
+CREATE TABLE tags (id INTEGER PRIMARY KEY, name TEXT NOT NULL, COLOR TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE item_tag_mappings (item_id INTEGER, tag_id INTEGER, FOREIGN KEY(item_id) REFERENCES items(id), FOREIGN KEY(tag_id) REFERENCES tags(id), PRIMARY KEY(item_id, tag_id));
+CREATE TABLE item_attachment_mappings (id INTEGER PRIMARY KEY, item_id INTEGER, attachment_path TEXT, FOREIGN KEY(item_id) REFERENCES items(id));

@@ -6,8 +6,7 @@ from database.database_manager import DatabaseManager
 
 async def main():
     db = DatabaseManager()
-    await db.check_for_db()
-    await db.connect()
+    await db.setup()
     webserver = Webserver(db)
     await webserver.run_server()
     await Future()

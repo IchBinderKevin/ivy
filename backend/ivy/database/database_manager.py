@@ -1,10 +1,11 @@
 import os
 from contextlib import asynccontextmanager
-from sqlite3 import Connection
 
 import aiosqlite
 
-DEFAULT_DB_PATH = "./db/ivy.db"
+from database import migration_runner
+
+DEFAULT_DB_PATH = "./data/ivy.db"
 
 class DatabaseManager:
     """
@@ -15,33 +16,14 @@ class DatabaseManager:
         self.db_path = os.getenv("DB_PATH", DEFAULT_DB_PATH)
         self._db = None
 
-    async def check_for_db(self):
+    async def setup(self):
         """
-        Checks if the database file exists at the specified path. If it does not exist, it creates the necessary directories and initializes the database schema.
+        Sets up the database, establishes a connection and runs migrations
         """
-        does_db_exist = os.path.exists(self.db_path)
-        if does_db_exist:
-            print("Database found, skipping initialization.")
-            return
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         async with aiosqlite.connect(self.db_path) as db:
-            await self.initialize_db_state(db)
+            await migration_runner.run_migrations(db)
             await db.commit()
-
-    @staticmethod
-    async def initialize_db_state(db: aiosqlite.Connection):
-        """
-        Initializes the database schema by creating the necessary tables for locations, items, tags, and their relationships.
-        This should probably be moved to a seed script or real migrations system (alembic?)=
-        :param db: The database connection to use for executing the schema initialization commands.
-        """
-        # TODO: I probably should move this to an external seed script of some kind
-        await db.execute("CREATE TABLE locations (id INTEGER PRIMARY KEY, name TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, user_id INTEGER DEFAULT 0, parent_location_id INTEGER, FOREIGN KEY (parent_location_id) REFERENCES locations(id) ON DELETE SET NULL)")
-        await db.execute("CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT, image TEXT, location_id INTEGER, quantity INTEGER, date_of_purchase TEXT, buy_price REAL, bought_from TEXT, serial_number TEXT, model_number TEXT, isbn TEXT, notes TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, user_id INTEGER DEFAULT 0, FOREIGN KEY(location_id) REFERENCES locations(id))")
-        await db.execute("CREATE TABLE tags (id INTEGER PRIMARY KEY, name TEXT NOT NULL, COLOR TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, user_id INTEGER DEFAULT 0)")
-        await db.execute("CREATE TABLE item_tag_mappings (item_id INTEGER, tag_id INTEGER, FOREIGN KEY(item_id) REFERENCES items(id), FOREIGN KEY(tag_id) REFERENCES tags(id), PRIMARY KEY(item_id, tag_id))")
-        await db.execute("CREATE TABLE item_attachment_mappings (id INTEGER PRIMARY KEY, item_id INTEGER, attachment_path TEXT, FOREIGN KEY(item_id) REFERENCES items(id))")
-        await db.commit()
 
     async def execute(self, sql: str, params: tuple = ()) -> aiosqlite.Cursor:
         """
@@ -102,10 +84,11 @@ class DatabaseManager:
         """
         Context manager for executing within a transaction.
         """
-        await self._db.execute("BEGIN")
-        try:
-            yield self._db
-            await self._db.commit()
-        except:
-            await self._db.rollback()
-            raise
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute("BEGIN")
+            try:
+                yield db
+                await db.commit()
+            except:
+                await db.rollback()
+                raise
