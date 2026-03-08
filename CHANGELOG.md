@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/IchBinderKevin/ivy/compare/v0.1.4...v0.1.5) (2026-03-08)
+
+
+### Bug Fixes
+
+* added uv.lock to version control for build process ([5ddb630](https://github.com/IchBinderKevin/ivy/commit/5ddb63031ce18516a98012e665964d4a9535df66))
+
 ## [0.1.4](https://github.com/IchBinderKevin/ivy/compare/v0.1.3...v0.1.4) (2026-03-08)
 
 
