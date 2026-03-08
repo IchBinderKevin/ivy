@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/IchBinderKevin/ivy/compare/v0.1.5...v0.1.6) (2026-03-08)
+
+
+### Bug Fixes
+
+* potentially fix docker issue ([1d2bde9](https://github.com/IchBinderKevin/ivy/commit/1d2bde9ab2a4eee793d3598cff82e95e7ba4bac6))
+
 ## [0.1.5](https://github.com/IchBinderKevin/ivy/compare/v0.1.4...v0.1.5) (2026-03-08)
 
 
