@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/IchBinderKevin/ivy/compare/v0.1.3...v0.1.4) (2026-03-08)
+
+
+### Bug Fixes
+
+* last try to actually auto trigger the push after release ([243e04e](https://github.com/IchBinderKevin/ivy/commit/243e04edba99bd1fd585215b4e208f2f00e79de3))
+* repaired the release pipeline ([1e580a5](https://github.com/IchBinderKevin/ivy/commit/1e580a50d2774735068776f904109a51a726638a))
+
 ## [0.1.3](https://github.com/IchBinderKevin/ivy/compare/v0.1.2...v0.1.3) (2026-03-08)
 
 
