@@ -24,16 +24,14 @@ RUN uv sync --no-dev
 
 # copy backend source
 COPY backend/ivy ./ivy
+COPY backend/migrations ./migrations
 
 # copy built frontend
 COPY --from=frontend /frontend/dist ./dist
 
 RUN mkdir -p data
-RUN mkdir -p db
 
 EXPOSE 3000
 ENV DEPLOYMENT_MODE="docker"
-ENV DIST_PATH="./dist"
-ENV FILE_STORAGE_PATH="./data"
 ENV PYTHONUNBUFFERED=1
 CMD ["uv", "run", "python", "ivy/main.py"]

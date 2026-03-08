@@ -3,9 +3,9 @@ import uuid
 
 from fastapi import UploadFile
 
+from common_constants import FILE_STORAGE_PATH
 from models.attachment_model import AttachmentModel
 
-DEFAULT_FILE_PATH = os.getenv("FILE_STORAGE_PATH", "./data")
 
 class FileStorageService:
     """
@@ -17,9 +17,6 @@ class FileStorageService:
     - We do not know the item id before the db ntry is crated
     """
 
-    def __init__(self):
-        self.base_file_path = os.getenv("FILE_PATH", DEFAULT_FILE_PATH)
-
     def stage_uploads(self, uploads: list[UploadFile]):
         """
         Uploads a list of files to a staging area.
@@ -28,7 +25,7 @@ class FileStorageService:
         """
         staged_files = []
         for file in uploads:
-            file_location = f"{self.base_file_path}/.staged/{uuid.uuid4()}.{file.filename.split('.')[-1]}"
+            file_location = f"{FILE_STORAGE_PATH}/.staged/{uuid.uuid4()}.{file.filename.split('.')[-1]}"
             os.makedirs(os.path.dirname(file_location), exist_ok=True)
             with open(file_location, "wb+") as file_object:
                 file_object.write(file.file.read())
@@ -41,7 +38,7 @@ class FileStorageService:
         :param upload: An UploadFile instance to be staged, or None if no file is provided.
         :return: An AttachmentModel instance with the path to the staged file, or None if no file is provided.
         """
-        file_location = f"{self.base_file_path}/.staged/{uuid.uuid4()}.{upload.filename.split('.')[-1]}"
+        file_location = f"{FILE_STORAGE_PATH}/.staged/{uuid.uuid4()}.{upload.filename.split('.')[-1]}"
         os.makedirs(os.path.dirname(file_location), exist_ok=True)
         with open(file_location, "wb+") as file_object:
             file_object.write(upload.file.read())
@@ -57,7 +54,7 @@ class FileStorageService:
         finalized_paths = []
         for staged_path in staged_file_paths:
             filename = os.path.basename(staged_path.path)
-            final_path = f"{self.base_file_path}/items/{item_id}/{filename}"
+            final_path = f"{FILE_STORAGE_PATH}/items/{item_id}/{filename}"
             os.makedirs(os.path.dirname(final_path), exist_ok=True)
             os.rename(staged_path.path, final_path)
             finalized_paths.append(AttachmentModel(path=final_path))
@@ -71,7 +68,7 @@ class FileStorageService:
         :return: path to the finalized file.
         """
         filename = os.path.basename(staged_file_path)
-        final_path = f"{self.base_file_path}/items/{item_id}/{filename}"
+        final_path = f"{FILE_STORAGE_PATH}/items/{item_id}/{filename}"
         os.makedirs(os.path.dirname(final_path), exist_ok=True)
         os.rename(staged_file_path, final_path)
         return final_path.strip(".")

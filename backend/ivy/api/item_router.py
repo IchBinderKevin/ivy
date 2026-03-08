@@ -30,7 +30,8 @@ def create_items_router(service: ItemService, storage_service: FileStorageServic
         try:
             item = json.loads(item)
             item = ItemModel.model_validate(item)
-            item.image = storage_service.stage_image_upload(image)
+            if image is not None: # needed because at this point item.image is always none
+                item.image = storage_service.stage_image_upload(image)
             item.attachments = storage_service.stage_uploads(attachments)
             await service.create(item, storage_service)
 

@@ -1,5 +1,3 @@
-from aiosqlite import Cursor
-
 from database.database_manager import DatabaseManager
 from models.item_model import ItemModel, ItemResponseModel
 from repositories.item_repository import ItemRepository
@@ -33,9 +31,10 @@ class ItemService:
         async with self.db_manager.transaction() as db:
             item_id = await self.repo.create(db, item_model)
             item_model.id = item_id
-            image_path = storage_service.finalize_image_upload(item_model.image, item_model.id)
-            item_model.image = image_path
-            await self.repo.update_image_path(db, item_model.id, image_path)
+            if item_model.image is not None:
+                image_path = storage_service.finalize_image_upload(item_model.image, item_model.id)
+                item_model.image = image_path
+                await self.repo.update_image_path(db, item_model.id, image_path)
             final_paths = storage_service.finalize_upload(item_model.attachments, item_model.id)
             item_model.attachments = final_paths
             await self.repo.assign_tags(db, item_model)
