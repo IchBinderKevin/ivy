@@ -5,9 +5,8 @@
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
         {
-          "type": "toml",
-          "path": "backend/pyproject.toml",
-          "key": "project.version"
+          "type": "generic",
+          "path": "backend/pyproject.toml"
         }
       ]
     }
