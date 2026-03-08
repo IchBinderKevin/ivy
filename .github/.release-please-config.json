@@ -2,11 +2,14 @@
   "packages": {
     "frontend": {
       "release-type": "node",
-      "package-name": "ivy-frontend"
-    },
-    "backend": {
-      "release-type": "python",
-      "package-name": "ivy-backend"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "backend/pyproject.toml",
+          "jsonpath": "$.project.version"
+        }
+      ]
     }
   }
 }
