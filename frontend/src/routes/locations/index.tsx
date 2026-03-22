@@ -7,6 +7,7 @@ import LocationWidgetRow from "@/features/locations/components/LocationWidgetRow
 import { useListLocations } from "@/features/locations/hooks/useLocations";
 import { createFileRoute } from "@tanstack/react-router";
 import { PlusIcon } from "lucide-react";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/locations/")({
   component: LocationRouteComponent,
@@ -14,6 +15,9 @@ export const Route = createFileRoute("/locations/")({
 
 function LocationRouteComponent() {
   const { data: locationData } = useListLocations();
+  useEffect(() => {
+    document.title = "Locations | ivy";
+  }, []);
 
   return (
     <div className="w-full h-full flex justify-start items-center p-10 gap-5 flex-col">

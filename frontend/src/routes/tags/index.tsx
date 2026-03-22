@@ -6,12 +6,16 @@ import TagWidgetRow from "@/features/tags/components/TagWidgetRow";
 import { useListTags } from "@/features/tags/hooks/useTags";
 import { createFileRoute } from "@tanstack/react-router";
 import { PlusIcon } from "lucide-react";
+import { useEffect } from "react";
 export const Route = createFileRoute("/tags/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { data: tagData } = useListTags();
+  useEffect(() => {
+    document.title = "Tags | ivy";
+  }, []);
 
   return (
     <div className="w-full h-full flex justify-start items-center p-10 gap-5 flex-col">

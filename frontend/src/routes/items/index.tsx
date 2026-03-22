@@ -7,7 +7,7 @@ import ItemWidgetRow from "@/features/items/components/ItemWidgetRow";
 import { useListItems } from "@/features/items/hooks/useItems";
 import { createFileRoute } from "@tanstack/react-router";
 import { Columns3Icon, ListIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/items/")({
   component: RouteComponent,
@@ -15,6 +15,9 @@ export const Route = createFileRoute("/items/")({
 
 function RouteComponent() {
   const { data: itemData } = useListItems();
+  useEffect(() => {
+    document.title = "Items | ivy";
+  }, []);
 
   const [displayMode, setDisplayMode] = useState<"list" | "grid">("grid");
 
