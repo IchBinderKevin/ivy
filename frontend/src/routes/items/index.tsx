@@ -57,7 +57,7 @@ function RouteComponent() {
         </div>
 
         {displayMode === "grid" && (
-          <div className="w-full flex-1 min-h-0 overflow-y-auto grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-3 gap-5 mb-2 content-start [scrollbar-gutter:stable]">
+          <div className="w-full flex-1 min-h-0 overflow-y-auto grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-5 mb-2 content-start [scrollbar-gutter:stable]">
             {itemData?.map((item) => (
               <CustomItemCard key={item.id} item={item} />
             ))}

@@ -44,6 +44,12 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --breakpoint-2xl: 100rem;
+  --breakpoint-3xl: 140rem;
+  --breakpoint-4xl: 180rem;
+}
+
 :root {
   --radius: 0.625rem;
   --background: rgba(248, 247, 244);
