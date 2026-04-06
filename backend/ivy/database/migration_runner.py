@@ -16,7 +16,7 @@ async def run_migrations(db: aiosqlite.Connection):
                 applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        cursor = await db.execute("SELECT * FROM schema_version")
+        cursor = await db.execute("SELECT * FROM schema_version ORDER BY applied_at DESC, version DESC LIMIT 1;")
         mig_info = await cursor.fetchone()
         if mig_info is None:
             print("No schema version found, starting with an empty database.")
@@ -35,7 +35,7 @@ async def run_migrations(db: aiosqlite.Connection):
                 print(f"Migration {mig_file} applied successfully.")
                 any_migration_applied = True
         if any_migration_applied:
-            print("Migration applied successfully.")
+            print("Migrations applied successfully.")
             return
         print("Migrations are up to date, no action taken.")
     except Exception as e:

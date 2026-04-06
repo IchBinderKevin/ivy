@@ -41,6 +41,18 @@ class ItemService:
             await self.repo.add_attachments(db, item_model)
         return item_model
 
+    async def delete(self, item_id: int, storage_service: FileStorageService):
+        """
+        Deletes an item by its ID.
+        :param item_id: The ID of the item to delete.
+        :param storage_service: The FileStorageService instance for handling file deletions.
+        :raises ValueError: If the item ID does not exist.
+        """
+        if not await self.repo.does_item_id_exist(item_id):
+            raise ValueError(f"Item with ID '{item_id}' does not exist.")
+        await self.repo.delete(item_id)
+        storage_service.delete_files_for_item(item_id)
+
     async def list(self) -> list[ItemResponseModel]:
         """
         Lists all items with their associated tags, location, and attachments.

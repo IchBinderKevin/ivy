@@ -11,6 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useDeleteItem } from "@/features/items/hooks/useItems";
 import type { Item } from "@/features/items/types/Item";
 import { getTextColorForHex } from "@/lib/utils";
 import {
@@ -23,6 +24,7 @@ import {
 import type { SyntheticEvent } from "react";
 
 export default function CustomItemCard(props: { item: Item }) {
+  const deleteItem = useDeleteItem();
   return (
     <div className="bg-[#efeeeb] flex flex-row h-60 w-125 rounded-lg gap-4 shadow-md">
       <img
@@ -46,7 +48,10 @@ export default function CustomItemCard(props: { item: Item }) {
                 <Edit2 />
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem variant="destructive">
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={() => deleteItem.mutate(props.item.id)}
+              >
                 <Trash2 />
                 Delete
               </DropdownMenuItem>
