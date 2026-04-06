@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/IchBinderKevin/ivy/compare/v0.2.0...v0.2.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* fixed weird breakpoint alignment for item cards ([#19](https://github.com/IchBinderKevin/ivy/issues/19)) ([afa0d8b](https://github.com/IchBinderKevin/ivy/commit/afa0d8bf42b30b1a3d8488c6d189580fae7226f1))
+
 ## [0.2.0](https://github.com/IchBinderKevin/ivy/compare/v0.1.7...v0.2.0) (2026-04-06)
 
 
