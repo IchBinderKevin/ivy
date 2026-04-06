@@ -21,9 +21,11 @@ class DatabaseManager:
         Sets up the database, establishes a connection and runs migrations
         """
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
-        async with aiosqlite.connect(self.db_path) as db:
-            await migration_runner.run_migrations(db)
-            await db.commit()
+        await self.connect()
+
+        await migration_runner.run_migrations(self._db)
+        await self._db.commit()
+
 
     async def execute(self, sql: str, params: tuple = ()) -> aiosqlite.Cursor:
         """
@@ -32,10 +34,9 @@ class DatabaseManager:
         :param params: A tuple of parameters to be used in the SQL command.
         :return: The cursor resulting from the execution of the SQL command.
         """
-        async with aiosqlite.connect(self.db_path) as db:
-            cursor = await db.execute(sql, params)
-            await db.commit()
-            return cursor
+        cursor = await self._db.execute(sql, params)
+        await self._db.commit()
+        return cursor
 
     async def execute_transaction(self, sql_commands: list[tuple[str, tuple]]):
         """
@@ -45,6 +46,7 @@ class DatabaseManager:
         """
         async with aiosqlite.connect(self.db_path) as db:
             async with db.execute("BEGIN"):
+                await db.execute("PRAGMA foreign_keys = ON;")
                 for sql, params in sql_commands:
                     await db.execute(sql, params)
             await db.commit()
@@ -56,10 +58,9 @@ class DatabaseManager:
         :param params: A tuple of parameters to be used in the SQL query.
         :return: A list of tuples representing the rows returned by the query.
         """
-        async with aiosqlite.connect(self.db_path) as db:
-            cursor = await db.execute(sql, params)
-            rows = await cursor.fetchall()
-            return rows
+        cursor = await self._db.execute(sql, params)
+        rows = await cursor.fetchall()
+        return rows
 
     async def fetch_one(self, sql: str, params: tuple = ()):
         """
@@ -68,16 +69,13 @@ class DatabaseManager:
         do for performance reasons then. Might add an automatic LIMIT later on.
         """
         # TODO: check if I cann add an automatic LIMIT 1 append to the query.
-        async with aiosqlite.connect(self.db_path) as db:
-            cursor = await db.execute(sql, params)
-            rows = await cursor.fetchone()
-            return rows
+        cursor = await self._db.execute(sql, params)
+        rows = await cursor.fetchone()
+        return rows
 
     async def connect(self):
-        """
-        Establishes a persistent connection to the database.
-        """
         self._db = await aiosqlite.connect(self.db_path)
+        await self._db.execute("PRAGMA foreign_keys = ON;")
 
     @asynccontextmanager
     async def transaction(self):
@@ -86,6 +84,7 @@ class DatabaseManager:
         """
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute("BEGIN")
+            await db.execute("PRAGMA foreign_keys = ON;")
             try:
                 yield db
                 await db.commit()

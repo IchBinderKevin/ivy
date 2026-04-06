@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/IchBinderKevin/ivy/compare/v0.1.7...v0.2.0) (2026-04-06)
+
+
+### Features
+
+* added contextual tab title and favicon (ivy-17) ([7d7508b](https://github.com/IchBinderKevin/ivy/commit/7d7508b28a9139fd791ba7b47297164edf4852a3))
+* added sidebar footer version display and corresponding api endpoint (ivy-16) ([578b034](https://github.com/IchBinderKevin/ivy/commit/578b0340eccb6189b82981c69c41ad968e0a2f20))
+
 ## [0.1.7](https://github.com/IchBinderKevin/ivy/compare/v0.1.6...v0.1.7) (2026-03-08)
 
 

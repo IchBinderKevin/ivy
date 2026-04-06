@@ -10,7 +10,7 @@ export const Route = createRootRoute({
       <IvySidebar />
       <main className="flex-1 min-w-0 flex flex-col">
         <TopBar />
-        <div className="flex-1 overflow-y-hidden">
+        <div className="flex-1 min-h-0 flex flex-col">
           <TooltipProvider>
             <Outlet />
           </TooltipProvider>

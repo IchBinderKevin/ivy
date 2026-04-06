@@ -48,7 +48,7 @@ function IvySidebar() {
   }, []);
 
   return (
-    <div className="h-full w-20 bg-neutral-100 text-black flex flex-col items-center justify-start gap-3 py-4">
+    <div className="h-full w-20 bg-[#f5f3f0] text-black flex flex-col items-center justify-start gap-3 py-4">
       <div className="flex justify-center items-center">
         <Logo />
       </div>
