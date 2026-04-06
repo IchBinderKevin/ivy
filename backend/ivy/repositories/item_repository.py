@@ -26,7 +26,7 @@ class ItemRepository:
         item = await db.execute("INSERT INTO items (name, description, image, location_id, "
                                 "quantity, date_of_purchase, buy_price, bought_from, "
                                 "serial_number, model_number, isbn, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                                (item_model.name, item_model.description, item_model.image, item_model.location.id,
+                                (item_model.name, item_model.description, item_model.image, item_model.location.id if item_model.location is not None else None,
                                  item_model.quantity,
                                  item_model.date_of_purchase, item_model.buy_price, item_model.bought_from,
                                  item_model.serial_number, item_model.model_number, item_model.isbn, item_model.notes))
@@ -105,3 +105,21 @@ class ItemRepository:
             mapped_items.append(dict(zip(columns, item)))
         item_models = [validate_safe(item, ItemModel) for item in mapped_items]
         return item_models
+
+    async def does_item_id_exist(self, item_id: int) -> bool:
+        """
+        Checks if an item with the specified ID exists in the database.
+        :param item_id: The ID of the item to check for existence.
+        :return: True if an item with the specified ID exists, False otherwise.
+        """
+        row = await self.db_manager.fetch_one(
+            "SELECT id FROM items WHERE id = ?;",
+            (item_id,)
+        )
+        return row is not None
+
+    async def delete(self, item_id: int):
+        await self.db_manager.execute(
+            "DELETE FROM items WHERE id = ?;",
+            (item_id,)
+        )

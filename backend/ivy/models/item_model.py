@@ -16,12 +16,17 @@ class ItemResponseModel(BaseModel):
     name: str
     description: str
     image: Optional[str] = None
-    buy_price: Optional[float] = None
-    buy_date: Optional[str] = None
-    created_at: datetime = datetime.now()
-    location: LocationModel = None
+    location: Optional[LocationModel] = None
     attachments: Optional[list[str]] = []
     tags: list[TagModel] = []
+    date_of_purchase: Optional[datetime] = Field(alias="dateOfPurchase", default=None)
+    buy_price: Optional[float] = Field(alias="buyPrice", default=None)
+    bought_from: Optional[str] = Field(alias="boughtFrom", default=None)
+    isbn: Optional[str] = None
+    model_number: Optional[str] = Field(alias="modelNumber", default=None)
+    notes: Optional[str] = None
+    quantity: int = 1
+    serial_number: Optional[str] = Field(alias="serialNumber", default=None)
 
 class ItemModel(BaseModel):
     """

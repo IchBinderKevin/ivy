@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { AccordionDataTable } from "@/features/items/components/AccordionDataTable";
 import CreateItemModal from "@/features/items/components/CreateItemModal";
+import CustomItemCard from "@/features/items/components/CustomItemCard";
 import { itemTableColumns } from "@/features/items/components/DataTableColumns";
-import ItemCard from "@/features/items/components/ItemCard";
 import ItemWidgetRow from "@/features/items/components/ItemWidgetRow";
 import { useListItems } from "@/features/items/hooks/useItems";
 import { createFileRoute } from "@tanstack/react-router";
@@ -22,10 +22,10 @@ function RouteComponent() {
   const [displayMode, setDisplayMode] = useState<"list" | "grid">("grid");
 
   return (
-    <div className="w-full h-full flex justify-start items-center p-10 gap-5 flex-col">
+    <div className="w-full h-full flex flex-col pt-10 px-10 gap-5">
       <ItemWidgetRow />
 
-      <div className="flex w-full flex-col gap-3 px-20">
+      <div className="w-full flex flex-col gap-3 px-20 min-h-0 flex-1">
         <div className="w-full flex flex-row justify-between items-center">
           <span className="text-2xl font-bold">Items</span>
           <div className="flex flex-row gap-2">
@@ -55,15 +55,19 @@ function RouteComponent() {
             />
           </div>
         </div>
+
         {displayMode === "grid" && (
-          <div className="w-full h-full flex flex-row flex-wrap gap-5">
+          <div className="w-full flex-1 min-h-0 overflow-y-auto grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-3 gap-5 mb-2 content-start [scrollbar-gutter:stable]">
             {itemData?.map((item) => (
-              <ItemCard key={item.id} item={item} />
+              <CustomItemCard key={item.id} item={item} />
             ))}
           </div>
         )}
+
         {displayMode === "list" && itemData && (
-          <AccordionDataTable columns={itemTableColumns} data={itemData} />
+          <div className="w-full flex-1 min-h-0 overflow-y-auto gap-5 mb-2 content-start [scrollbar-gutter:stable]">
+            <AccordionDataTable columns={itemTableColumns} data={itemData} />
+          </div>
         )}
       </div>
     </div>

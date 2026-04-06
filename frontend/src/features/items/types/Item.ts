@@ -7,9 +7,17 @@ export type Item = {
   description: string;
   image: string | null;
   location: Location;
-  buy_price: number;
   buy_date: string;
   tags: Tag[];
+  attachments?: string[];
+  date_of_purchase?: Date;
+  buy_price?: number;
+  bought_from?: string;
+  isbn?: string;
+  model_number?: string;
+  notes?: string;
+  quantity: number;
+  serial_number?: string;
 };
 
 export type ItemCreationData = {

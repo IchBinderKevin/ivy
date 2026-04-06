@@ -72,3 +72,16 @@ class FileStorageService:
         os.makedirs(os.path.dirname(final_path), exist_ok=True)
         os.rename(staged_file_path, final_path)
         return final_path.strip(".")
+
+    def delete_files_for_item(self, item_id: int):
+        """
+        Deletes all files associated with the specified item ID.
+        :param item_id: The ID of the item for which to delete associated files.
+        """
+        item_folder = f"{FILE_STORAGE_PATH}/items/{item_id}"
+        if os.path.exists(item_folder):
+            for filename in os.listdir(item_folder):
+                file_path = os.path.join(item_folder, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            os.rmdir(item_folder)

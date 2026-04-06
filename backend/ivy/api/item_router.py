@@ -39,6 +39,18 @@ def create_items_router(service: ItemService, storage_service: FileStorageServic
         except ValueError as e:
             raise HTTPException(400, str(e))
 
+    @router.delete("/delete/{item_id}")
+    async def delete_item(item_id: int):
+        """
+        Deletes a item by its ID.
+        :param item_id: The ID of the item to delete.
+        """
+        try:
+            await service.delete(item_id, storage_service)
+            return Response(status_code=status.HTTP_200_OK)
+        except ValueError as e:
+            raise HTTPException(400, str(e))
+
 
     @router.get("/list")
     async def list_items() -> list[ItemResponseModel]:

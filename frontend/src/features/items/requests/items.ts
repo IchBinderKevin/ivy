@@ -15,3 +15,14 @@ export async function createItem(itemData: FormData) {
     return null;
   });
 }
+
+export async function deleteItem(id: number) {
+  return await fetch(`/api/items/delete/${id}`, {
+    method: "DELETE",
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error("Failed to delete item");
+    }
+    return null;
+  });
+}
