@@ -1,11 +1,10 @@
-
 from fastapi import APIRouter, HTTPException, Response, status
 
 from models.tag_model import TagModel, TagUsageModel
-from services.tag_service import TagService
+from services import tag_service
 
 
-def create_tags_router(service: TagService) -> APIRouter:
+def create_tags_router() -> APIRouter:
     """
     Creates the router for tag related endpoints.
     """
@@ -17,7 +16,7 @@ def create_tags_router(service: TagService) -> APIRouter:
         Creates a new tag.
         """
         try:
-            await service.create(tag.name, tag.color)
+            await tag_service.create_tag(tag.name, tag.color)
             return Response(status_code=status.HTTP_201_CREATED)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -28,7 +27,7 @@ def create_tags_router(service: TagService) -> APIRouter:
         Lists all tags.
         :return: A list of TagModel instances.
         """
-        return await service.list()
+        return await tag_service.list_tags()
 
     @router.get("/usage")
     async def list_tag_usage() -> TagUsageModel:
@@ -36,7 +35,7 @@ def create_tags_router(service: TagService) -> APIRouter:
         Lists the usage statistics of tags.
         :return: TagUsageModel containing usage statistics.
         """
-        return await service.list_usage()
+        return await tag_service.list_tags_usage()
 
     @router.post("/edit")
     async def edit_tag(tag: TagModel):
@@ -45,7 +44,7 @@ def create_tags_router(service: TagService) -> APIRouter:
         :param tag: The TagModel model passed from the frontend.
         """
         try:
-            await service.update(tag.id, tag.name, tag.color)
+            await tag_service.update_tag(tag.id, tag.name, tag.color)
             return Response(status_code=status.HTTP_200_OK)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -58,10 +57,9 @@ def create_tags_router(service: TagService) -> APIRouter:
         :param tag_id: The ID of the tag to delete.
         """
         try:
-            await service.delete(tag_id)
+            await tag_service.delete_tag(tag_id)
             return Response(status_code=status.HTTP_200_OK)
         except ValueError as e:
             raise HTTPException(400, str(e))
-
 
     return router
