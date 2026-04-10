@@ -10,3 +10,6 @@ class LocationModel(BaseModel):
     id: Optional[int] = None
     name: str
     created_at: datetime = datetime.now()
+
+    class Config:
+        from_attributes = True

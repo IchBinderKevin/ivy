@@ -1,17 +1,12 @@
 import json
-import os
-import uuid
 
-from models.attachment_model import AttachmentModel
 from models.item_model import ItemModel, ItemResponseModel
-from services.file_storage_service import FileStorageService
-from services.item_service import ItemService
 from fastapi import APIRouter, status, HTTPException, Response, Form, UploadFile, File
 
-from utils.validation_util import validate_safe
+from services import file_storage_service, item_service
 
 
-def create_items_router(service: ItemService, storage_service: FileStorageService):
+def create_items_router():
     """
     Creates the router for item related endpoints.
     """
@@ -31,9 +26,9 @@ def create_items_router(service: ItemService, storage_service: FileStorageServic
             item = json.loads(item)
             item = ItemModel.model_validate(item)
             if image is not None: # needed because at this point item.image is always none
-                item.image = storage_service.stage_image_upload(image)
-            item.attachments = storage_service.stage_uploads(attachments)
-            await service.create(item, storage_service)
+                item.image = file_storage_service.stage_image_upload(image)
+            item.attachments = file_storage_service.stage_uploads(attachments)
+            await item_service.create_item(item)
 
             return Response(status_code=status.HTTP_201_CREATED)
         except ValueError as e:
@@ -46,7 +41,7 @@ def create_items_router(service: ItemService, storage_service: FileStorageServic
         :param item_id: The ID of the item to delete.
         """
         try:
-            await service.delete(item_id, storage_service)
+            await item_service.delete_item(item_id)
             return Response(status_code=status.HTTP_200_OK)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -58,7 +53,7 @@ def create_items_router(service: ItemService, storage_service: FileStorageServic
         Lists all items with their associated tags, location, and attachments.
          :return: A list of ItemResponseModel instances.
         """
-        items = await service.list()
+        items = await item_service.list_items()
         return items
 
     return router

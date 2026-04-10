@@ -9,14 +9,8 @@ from uvicorn.server import Server
 from api.item_router import create_items_router
 from api.location_router import create_locations_router
 from api.tag_router import create_tags_router
-from database.database_manager import DatabaseManager
 from common_constants import FILE_STORAGE_PATH
-from repositories.location_repository import LocationRepository
-from repositories.tag_repository import TagRepository
-from services.file_storage_service import FileStorageService
-from services.item_service import ItemService
-from services.location_service import LocationService
-from services.tag_service import TagService
+
 from fastapi.responses import FileResponse
 
 FRONTEND_DIST = "./dist"
@@ -29,19 +23,14 @@ class Webserver:
     Has as deployment mode to only serve the frontend in production as it is directly served by vite in development.
     """
 
-    def __init__(self, db: DatabaseManager):
+    def __init__(self):
         self.app = FastAPI()
-        # Init repositories and services:
-        project_repository = LocationRepository(db)
-        tag_repository = TagRepository(db)
-        project_service = LocationService(project_repository)
-        tag_service = TagService(tag_repository)
-        item_service = ItemService(db)
+
         if not os.path.exists(FILE_STORAGE_PATH):
             os.makedirs(FILE_STORAGE_PATH)
-        self.app.include_router(create_locations_router(project_service), prefix="/api/locations")
-        self.app.include_router(create_tags_router(tag_service), prefix="/api/tags")
-        self.app.include_router(create_items_router(item_service, FileStorageService()), prefix="/api/items")
+        self.app.include_router(create_locations_router(), prefix="/api/locations")
+        self.app.include_router(create_tags_router(), prefix="/api/tags")
+        self.app.include_router(create_items_router(), prefix="/api/items")
         # TODO: probably move to its own router for visual clarity down the line
         self.app.get("/api/version")(lambda: {"version": os.getenv("APP_VERSION") if os.getenv("APP_VERSION") else FALLBACK_VERSION_NAME})
 
@@ -71,4 +60,4 @@ class Webserver:
         """
         config = Config(self.app, host="0.0.0.0", port=3000, log_config=None)
         server = Server(config)
-        _ = asyncio.create_task(server.serve())
+        await server.serve()

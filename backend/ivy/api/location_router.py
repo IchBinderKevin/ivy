@@ -1,12 +1,10 @@
-
 from fastapi import APIRouter, status, HTTPException, Response
-from pydantic import BaseModel
 
 from models.location_model import LocationModel
-from services.location_service import LocationService
+from services import location_service
 
 
-def create_locations_router(service: LocationService) -> APIRouter:
+def create_locations_router() -> APIRouter:
     """
     Creates the router for location related endpoints.
     """
@@ -19,7 +17,7 @@ def create_locations_router(service: LocationService) -> APIRouter:
         :param location: The LocationModel model passed from the frontend.
         """
         try:
-            await service.create(location.name)
+            await location_service.create_location(location.name)
             return Response(status_code=status.HTTP_201_CREATED)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -30,7 +28,7 @@ def create_locations_router(service: LocationService) -> APIRouter:
         Lists all locations.
         :return: A list of LocationModel instances.
         """
-        locations = await service.list()
+        locations = await location_service.list_locations()
         return locations
 
     # delete location
@@ -41,7 +39,7 @@ def create_locations_router(service: LocationService) -> APIRouter:
         :param location_id: The ID of the location to delete.
         """
         try:
-            await service.delete(location_id)
+            await location_service.delete_location(location_id)
             return Response(status_code=status.HTTP_200_OK)
         except ValueError as e:
             raise HTTPException(400, str(e))
@@ -54,7 +52,7 @@ def create_locations_router(service: LocationService) -> APIRouter:
         :param location: The LocationModel model passed from the frontend containing the ID and new name.
         """
         try:
-            await service.update(location)
+            await location_service.update_location(location)
             return Response(status_code=status.HTTP_200_OK)
         except ValueError as e:
             raise HTTPException(400, str(e))

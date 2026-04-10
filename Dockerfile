@@ -25,8 +25,10 @@ RUN uv sync --no-dev
 
 # copy backend source
 COPY backend/ivy ./ivy
-COPY backend/migrations ./migrations
+COPY backend/alembic.ini ./
 
+COPY backend/entrypoint.sh ./
+RUN chmod +x entrypoint.sh
 # copy built frontend
 COPY --from=frontend /frontend/dist ./dist
 
@@ -40,4 +42,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 3000
 
-CMD ["uv", "run", "python", "ivy/main.py"]
+CMD ["./entrypoint.sh"]
