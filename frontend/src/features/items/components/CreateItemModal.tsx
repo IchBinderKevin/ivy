@@ -87,8 +87,8 @@ export default function CreateItemModal({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="min-w-5/6">
-        <DialogHeader>
+      <DialogContent className="flex w-[95vw] max-w-[95vw] max-h-[95vh] flex-col overflow-hidden p-2 sm:w-[92vw] sm:max-w-5xl! sm:max-h-[90vh] sm:p-3 lg:max-w-6xl!">
+        <DialogHeader className="px-2 pt-2 sm:px-3 sm:pt-3">
           <DialogTitle>Create new Item</DialogTitle>
           <DialogDescription>
             Creates a new Item with associated tags and metadata.
@@ -96,14 +96,14 @@ export default function CreateItemModal({
         </DialogHeader>
 
         <div
-          className={`h-full min-h-full w-full grid auto-rows-fr gap-2 p-2 overflow-y-auto grid-cols-2`}
+          className={`grid w-full flex-1 grid-cols-1 gap-4 overflow-y-auto p-2 sm:p-3 md:grid-cols-2`}
         >
           <div className="flex flex-col gap-3">
             <div className="w-full h-12 bg-slate-100 rounded-md flex justify-start items-center text-lg font-medium px-3">
               <span>Basic Information</span>
             </div>
             <div className="w-full flex flex-col px-3 gap-3 items-center">
-              <div className="w-full flex flex-row items-center justify-start gap-5">
+              <div className="w-full flex flex-row items-center justify-start gap-4 sm:gap-5">
                 <ImagePicker
                   value={itemToBeCreated.image}
                   onChange={(file) =>
@@ -113,7 +113,7 @@ export default function CreateItemModal({
                     })
                   }
                 />
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex w-full min-w-0 flex-col gap-2">
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="input-field-username">Name</FieldLabel>
                     <Input
@@ -147,7 +147,7 @@ export default function CreateItemModal({
                   </Field>
                 </div>
               </div>
-              <div className="w-full flex flex-row items-center justify-start gap-5">
+              <div className="w-full flex flex-row items-center justify-start gap-3 sm:gap-5">
                 <Field className="gap-1.5 w-3/4">
                   <FieldLabel htmlFor="input-field-location">
                     Location
@@ -239,13 +239,13 @@ export default function CreateItemModal({
               </Field>
             </div>
           </div>
-          <div className="flex flex-col gap-5 mb-0">
+          <div className="mb-0 flex flex-col gap-5">
             <div className="flex flex-col gap-3">
               <div className="w-full h-12 bg-slate-100 rounded-md flex justify-start items-center text-lg font-medium px-3">
                 <span>Purchase Detail (optional)</span>
               </div>
               <div className="w-full flex flex-col px-3 gap-3 items-start justify-start">
-                <div className="w-full flex flex-row gap-3 items-center justify-start">
+                <div className="w-full flex flex-row items-center justify-start gap-3">
                   <Field className="gap-1.5 w-3/4">
                     <FieldLabel htmlFor="input-field-date-of-purchase">
                       Date of Purchase
@@ -316,8 +316,8 @@ export default function CreateItemModal({
                 <span>Item Metadata (optional)</span>
               </div>
               <div className="w-full flex flex-col px-3 gap-3 items-start justify-start">
-                <div className="w-full flex flex-row gap-5">
-                  <Field className="gap-1.5">
+                <div className="w-full flex flex-row gap-3 sm:gap-5">
+                  <Field className="gap-1.5 w-1/2">
                     <FieldLabel htmlFor="input-field-serial-number">
                       Serial Number
                     </FieldLabel>
@@ -334,7 +334,7 @@ export default function CreateItemModal({
                       }
                     />
                   </Field>
-                  <Field className="gap-1.5">
+                  <Field className="gap-1.5 w-1/2">
                     <FieldLabel htmlFor="input-field-model-number">
                       Model Number
                     </FieldLabel>
@@ -376,7 +376,7 @@ export default function CreateItemModal({
             </div>
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="px-2 pb-2 pt-2 sm:px-3 sm:pb-3 sm:flex-col-reverse md:flex-row md:justify-end">
           <DialogClose asChild>
             <Button className="bg-red-500 text-white hover:bg-red-400 hover:text-white cursor-pointer">
               Cancel
